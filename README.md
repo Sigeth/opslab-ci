@@ -11,13 +11,16 @@ Each repository keeps its build logic in its own `Makefile` (`lint`, `test`, `bu
 | `go --source=. check [--targets=lint,test,…]` | Go toolchain (golang image + make), runs Makefile targets |
 | `go --source=. licenses` | Fails on dependencies whose license is not MIT-compatible |
 | `rust --source=. check [--targets=lint,test,deny,…]` | Rust toolchain (rustfmt, clippy, cargo-deny, kopium), runs Makefile targets |
+| `nodejs --source=. check [--targets=lint,test,…]` | Node.js toolchain (`npm ci` from the lock file), runs Makefile targets |
+| `nodejs --source=. lock` | Resolves package.json in a container and returns package-lock.json (install scripts disabled) |
 | `image --source=.` | Builds the Dockerfile for linux/amd64 |
 | `crds --crds=crds --samples=samples --rejected=samples/invalid` | Starts k3s, installs the CRDs, and checks that samples are accepted and invalid ones rejected |
 
 Before the shared libraries are published, or to try a contract change before tagging it, use local checkouts instead of the published versions:
 
 - `--core-go=../core-go` on `go` (for Go repositories),
-- `--core-rs=../core-rs` and `--core-go=../core-go` on `rust` (for Rust repositories).
+- `--core-rs=../core-rs` and `--core-go=../core-go` on `rust` (for Rust repositories),
+- `--api=../api` on `nodejs` (the web UI's API client is generated from the api's `openapi.json`).
 
 ## Usage
 
