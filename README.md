@@ -10,7 +10,7 @@ Each repository keeps its build logic in its own `Makefile` (`lint`, `test`, `bu
 |---|---|
 | `go --source=. check [--targets=lint,test,…]` | Go toolchain (golang image + make), runs Makefile targets |
 | `go --source=. licenses` | Fails on dependencies whose license is not MIT-compatible |
-| `rust --source=. check [--targets=lint,test,deny,…]` | Rust toolchain (rustfmt, clippy, cargo-deny, kopium), runs Makefile targets |
+| `rust --source=. [--postgres] check [--targets=lint,test,deny,…]` | Rust toolchain (rustfmt, clippy, cargo-deny, kopium), runs Makefile targets. `--postgres` starts PostgreSQL for the tests (`OPSLAB_TEST_DATABASE_URL`). |
 | `nodejs --source=. check [--targets=lint,test,…]` | Node.js toolchain (`npm ci` from the lock file), runs Makefile targets |
 | `nodejs --source=. lock` | Resolves package.json in a container and returns package-lock.json (install scripts disabled) |
 | `helm --source=. check [--targets=lint,template,…]` | Helm toolchain, runs Makefile targets |
