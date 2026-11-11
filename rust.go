@@ -10,6 +10,7 @@ const (
 	coreRsGitURL     = "https://github.com/Sigeth/opslab-core-rs"
 	cargoDenyVersion = "0.20.2"
 	kopiumVersion    = "0.24.1"
+	postgresImage    = "docker.io/library/postgres:18"
 )
 
 // Rust is the toolchain of a Rust repository.
@@ -22,6 +23,8 @@ type Rust struct {
 	CoreRs *dagger.Directory
 	// +private
 	CoreGo *dagger.Directory
+	// +private
+	Postgres bool
 }
 
 // Rust returns the Rust toolchain for a repository.
@@ -43,8 +46,12 @@ func (m *OpslabCi) Rust(
 	// +optional
 	// +ignore=["bin", "target", "node_modules", "dist", ".idea", ".vscode"]
 	coreGo *dagger.Directory,
+	// Start a PostgreSQL server for the tests, reachable through
+	// OPSLAB_TEST_DATABASE_URL (superuser, may create databases).
+	// +optional
+	postgres bool,
 ) *Rust {
-	return &Rust{Source: source, Version: version, CoreRs: coreRs, CoreGo: coreGo}
+	return &Rust{Source: source, Version: version, CoreRs: coreRs, CoreGo: coreGo, Postgres: postgres}
 }
 
 // Container with the toolchain (rustfmt, clippy, cargo-deny, kopium), caches
@@ -78,6 +85,16 @@ opslab-auth = { path = "/deps/core-rs/crates/opslab-auth" }
 		ctr = ctr.
 			WithMountedDirectory("/deps/core-go", r.CoreGo).
 			WithEnvVariable("CORE_GO_DIR", "/deps/core-go")
+	}
+	if r.Postgres {
+		db := dag.Container(dagger.ContainerOpts{Platform: platform}).
+			From(postgresImage).
+			WithEnvVariable("POSTGRES_PASSWORD", "test").
+			WithExposedPort(5432).
+			AsService(dagger.ContainerAsServiceOpts{UseEntrypoint: true})
+		ctr = ctr.
+			WithServiceBinding("postgres", db).
+			WithEnvVariable("OPSLAB_TEST_DATABASE_URL", "postgres://postgres:test@postgres:5432/postgres")
 	}
 	return ctr
 }
