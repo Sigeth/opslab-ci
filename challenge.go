@@ -15,7 +15,7 @@ func (m *OpslabCi) ChallengeLint(
 	source *dagger.Directory,
 	// Version of the opslab CLI to install.
 	// +optional
-	// +default="v0.1.0"
+	// +default="v0.2.0"
 	cliVersion string,
 	// Local checkout of opslab-cli built instead of the published version.
 	// +optional
