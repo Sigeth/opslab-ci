@@ -1,0 +1,26 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  module:
+    # The module must load, and its Kubernetes pipeline must work end to end
+    # on the CRDs of opslab-core-go.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/checkout@v5
+        with:
+          repository: Sigeth/opslab-core-go
+          path: core-go
+      - uses: dagger/dagger-for-github@v8.4.1
+        with:
+          version: "0.21.11"
+          verb: call
+          args: crds --crds=core-go/crds --samples=core-go/samples --rejected=core-go/samples/invalid
