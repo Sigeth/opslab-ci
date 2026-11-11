@@ -95,6 +95,11 @@ func (h *Helm) Validate(
 		WithExec([]string{"sh", "-euc", `
 for f in /rendered/*.yaml; do
   echo "== $(basename "$f")"
+  # A server dry-run does not create namespaces, so namespaced objects in a
+  # namespace the chart creates would be rejected: create those first.
+  for ns in $(awk '/^kind: Namespace$/{n=1;next} n && /^  name: /{print $2; n=0} /^---/{n=0}' "$f"); do
+    kubectl get namespace "$ns" >/dev/null 2>&1 || kubectl create namespace "$ns"
+  done
   kubectl apply --dry-run=server -f "$f"
 done`}).
 		Stdout(ctx)
