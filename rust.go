@@ -31,7 +31,7 @@ func (m *OpslabCi) Rust(
 	source *dagger.Directory,
 	// Rust version (rust image tag).
 	// +optional
-	// +default="1.96"
+	// +default="1.99.1"
 	version string,
 	// Local checkout of opslab-core-rs (with its .git and tags) used instead
 	// of the published repository.

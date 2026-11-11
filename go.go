@@ -8,6 +8,10 @@ import (
 
 const coreGoModule = "github.com/Sigeth/opslab-core-go"
 
+// goVersion is the default golang image tag; keep it in sync with the
+// +default of Go().
+const goVersion = "1.27.4"
+
 // licensesAllowed are the dependency licenses compatible with MIT (D14).
 const licensesAllowed = "MIT,Apache-2.0,BSD-2-Clause,BSD-3-Clause,ISC"
 
@@ -28,7 +32,7 @@ func (m *OpslabCi) Go(
 	source *dagger.Directory,
 	// Go version (golang image tag).
 	// +optional
-	// +default="1.27"
+	// +default="1.27.4"
 	version string,
 	// Local checkout of opslab-core-go used instead of the published module.
 	// +optional

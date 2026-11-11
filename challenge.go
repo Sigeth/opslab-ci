@@ -28,10 +28,10 @@ func (m *OpslabCi) ChallengeLint(
 ) (string, error) {
 	var ctr *dagger.Container
 	if cli != nil {
-		ctr = m.Go(cli, "1.27", coreGo).Container().
+		ctr = m.Go(cli, goVersion, coreGo).Container().
 			WithExec([]string{"go", "build", "-o", "/usr/local/bin/opslab", "./cmd/opslab"})
 	} else {
-		ctr = m.Go(dag.Directory(), "1.27", nil).Container().
+		ctr = m.Go(dag.Directory(), goVersion, nil).Container().
 			WithExec([]string{"go", "install", "github.com/Sigeth/opslab-cli/cmd/opslab@" + cliVersion}).
 			WithExec([]string{"cp", "/go/bin/opslab", "/usr/local/bin/opslab"})
 	}
