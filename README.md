@@ -13,6 +13,8 @@ Each repository keeps its build logic in its own `Makefile` (`lint`, `test`, `bu
 | `rust --source=. check [--targets=lint,test,deny,…]` | Rust toolchain (rustfmt, clippy, cargo-deny, kopium), runs Makefile targets |
 | `nodejs --source=. check [--targets=lint,test,…]` | Node.js toolchain (`npm ci` from the lock file), runs Makefile targets |
 | `nodejs --source=. lock` | Resolves package.json in a container and returns package-lock.json (install scripts disabled) |
+| `helm --source=. check [--targets=lint,template,…]` | Helm toolchain, runs Makefile targets |
+| `helm --source=. validate` | Renders the chart and validates every manifest on k3s (server-side dry run) |
 | `image --source=.` | Builds the Dockerfile for linux/amd64 |
 | `crds --crds=crds --samples=samples --rejected=samples/invalid` | Starts k3s, installs the CRDs, and checks that samples are accepted and invalid ones rejected |
 
