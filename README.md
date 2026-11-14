@@ -17,6 +17,7 @@ Each repository keeps its build logic in its own `Makefile` (`lint`, `test`, `bu
 | `helm --source=. validate` | Renders the chart and validates every manifest on k3s (server-side dry run) |
 | `challenge-lint --source=.` | `opslab challenge lint` on a challenge repository (`--cli`/`--core-go` to use local checkouts) |
 | `image --source=.` | Builds the Dockerfile for linux/amd64 |
+| `vm-image --source=DIR [--source-image-archive=FILE]` | Builds a VM image recipe (`image.yaml`: a cloud image URL with its checksum, or a base containerDisk, plus scripts) into a KubeVirt containerDisk, with libguestfs (no KVM needed). `--source-image-archive` takes the base from an OCI/docker archive instead of pulling it (dev builds of unpublished bases). Then `export --path=disk.tar` or `publish --address=...` |
 | `crds --crds=crds --samples=samples --rejected=samples/invalid` | Starts k3s, installs the CRDs, and checks that samples are accepted and invalid ones rejected |
 
 Before the shared libraries are published, or to try a contract change before tagging it, use local checkouts instead of the published versions:
